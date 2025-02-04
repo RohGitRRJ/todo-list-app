@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { TaskItem } from "./task-item";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SelectTask } from "@db/schema";
+import { FileText } from "lucide-react";
 
 export function TaskList() {
   const { data: tasks, isLoading } = useQuery<SelectTask[]>({
@@ -22,6 +23,14 @@ export function TaskList() {
     return tasks?.filter(task => !priority || task.priority === priority) || [];
   };
 
+  const EmptyState = () => (
+    <div className="text-center py-12">
+      <FileText className="mx-auto h-12 w-12 text-gray-400" />
+      <h3 className="mt-4 text-lg font-medium text-gray-900">No tasks found</h3>
+      <p className="mt-2 text-sm text-gray-500">Get started by adding your first task</p>
+    </div>
+  );
+
   return (
     <Tabs defaultValue="all" className="w-full">
       <TabsList className="grid w-full grid-cols-4">
@@ -30,25 +39,41 @@ export function TaskList() {
         <TabsTrigger value="medium">Medium</TabsTrigger>
         <TabsTrigger value="high">High</TabsTrigger>
       </TabsList>
-      <TabsContent value="all" className="mt-6 space-y-4">
-        {filterTasks(null).map(task => (
-          <TaskItem key={task.id} task={task} />
-        ))}
+      <TabsContent value="all" className="mt-6">
+        {filterTasks(null).length > 0 ? (
+          <div className="space-y-4">
+            {filterTasks(null).map(task => (
+              <TaskItem key={task.id} task={task} />
+            ))}
+          </div>
+        ) : <EmptyState />}
       </TabsContent>
-      <TabsContent value="low" className="mt-6 space-y-4">
-        {filterTasks(1).map(task => (
-          <TaskItem key={task.id} task={task} />
-        ))}
+      <TabsContent value="low" className="mt-6">
+        {filterTasks(1).length > 0 ? (
+          <div className="space-y-4">
+            {filterTasks(1).map(task => (
+              <TaskItem key={task.id} task={task} />
+            ))}
+          </div>
+        ) : <EmptyState />}
       </TabsContent>
-      <TabsContent value="medium" className="mt-6 space-y-4">
-        {filterTasks(2).map(task => (
-          <TaskItem key={task.id} task={task} />
-        ))}
+      <TabsContent value="medium" className="mt-6">
+        {filterTasks(2).length > 0 ? (
+          <div className="space-y-4">
+            {filterTasks(2).map(task => (
+              <TaskItem key={task.id} task={task} />
+            ))}
+          </div>
+        ) : <EmptyState />}
       </TabsContent>
-      <TabsContent value="high" className="mt-6 space-y-4">
-        {filterTasks(3).map(task => (
-          <TaskItem key={task.id} task={task} />
-        ))}
+      <TabsContent value="high" className="mt-6">
+        {filterTasks(3).length > 0 ? (
+          <div className="space-y-4">
+            {filterTasks(3).map(task => (
+              <TaskItem key={task.id} task={task} />
+            ))}
+          </div>
+        ) : <EmptyState />}
       </TabsContent>
     </Tabs>
   );
