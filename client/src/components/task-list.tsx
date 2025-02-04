@@ -19,8 +19,13 @@ export function TaskList() {
     );
   }
 
-  const filterTasks = (priority: number | null) => {
-    return tasks?.filter(task => !priority || task.priority === priority) || [];
+  const filterTasks = (priority: number | null, completed?: boolean) => {
+    return tasks?.filter(task => {
+      if (completed !== undefined) {
+        return task.completed === completed;
+      }
+      return !priority || task.priority === priority;
+    }) || [];
   };
 
   const EmptyState = () => (
@@ -33,11 +38,12 @@ export function TaskList() {
 
   return (
     <Tabs defaultValue="all" className="w-full">
-      <TabsList className="grid w-full grid-cols-4">
+      <TabsList className="grid w-full grid-cols-5">
         <TabsTrigger value="all">All</TabsTrigger>
         <TabsTrigger value="low">Low</TabsTrigger>
         <TabsTrigger value="medium">Medium</TabsTrigger>
         <TabsTrigger value="high">High</TabsTrigger>
+        <TabsTrigger value="completed">Completed</TabsTrigger>
       </TabsList>
       <TabsContent value="all" className="mt-6">
         {filterTasks(null).length > 0 ? (
@@ -70,6 +76,15 @@ export function TaskList() {
         {filterTasks(3).length > 0 ? (
           <div className="space-y-4">
             {filterTasks(3).map(task => (
+              <TaskItem key={task.id} task={task} />
+            ))}
+          </div>
+        ) : <EmptyState />}
+      </TabsContent>
+      <TabsContent value="completed" className="mt-6">
+        {filterTasks(null, true).length > 0 ? (
+          <div className="space-y-4">
+            {filterTasks(null, true).map(task => (
               <TaskItem key={task.id} task={task} />
             ))}
           </div>
