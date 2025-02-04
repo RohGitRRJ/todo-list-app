@@ -31,8 +31,8 @@ export function NotificationPanel() {
             exit={{ opacity: 0, x: 100 }}
             transition={{ duration: 0.2 }}
           >
-            <Alert className="bg-teal-50 border-teal-200">
-              <Bell className="h-4 w-4 text-teal-600" />
+            <Alert className="bg-background border-primary">
+              <Bell className="h-4 w-4 text-primary" />
               <AlertTitle>High Priority Task</AlertTitle>
               <AlertDescription>{task.title}</AlertDescription>
             </Alert>
